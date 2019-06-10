@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>회원 목록 리스트</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        table {
+          border-collapse:collapse;
+        }  
+        table th, td {
+          padding: 10px;
+        } 
+    </style> 
+  </head>
+  <body>
+    <center>
+    <table border="1">
+        <tr>
+          <td>회원번호</td>
+          <td>이름</td>
+          <td>나이</td>
+          <td>생일</td>
+          <td>주소</td>
+          <td>우편번호</td>
+          <td>취미</td>
+          <td>전화번호</td>
+          <td>아이디</td>
+        </tr>
+      <% for (const result of results) { %>
+        <tr>
+          <td><%= result.num %></td>
+          <td><%= result.name %></td>
+          <td><%= result.age %></td>
+          <td><%= result.birth %></td>
+          <td><%= result.address %></td>
+          <td><%= result.post %></td>
+          <td><%= result.hobby %></td>
+          <td><%= result.number %></td>
+          <td><%= result.email %></td>
+        </tr>
+      <% } %>
+    </table>
+  <a href="/"><input type="button" value="로그아웃"></a>
+    </center>
+  </body>
+</html>
