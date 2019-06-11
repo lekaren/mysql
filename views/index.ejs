@@ -25,6 +25,7 @@
           <td>취미</td>
           <td>전화번호</td>
           <td>아이디</td>
+          <td>탈퇴</td>
         </tr>
       <% for (const result of results) { %>
         <tr>
@@ -37,6 +38,7 @@
           <td><%= result.hobby %></td>
           <td><%= result.number %></td>
           <td><%= result.email %></td>
+          <td><a href="/delete?num=<%= result.num %>" class="delete">탈퇴</a></td>
         </tr>
       <% } %>
     </table>
