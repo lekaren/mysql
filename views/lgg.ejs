@@ -48,19 +48,69 @@ button.bt-login
                     height: 50px;
                 } 
 </style>
-    </head>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+
+function click_check(){
+
+// 메일 정규식
+var Mail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+
+// 비밀번호 정규식
+var pw1 = /^[a-zA-Z0-9]{4,12}$/;
+
+var id = $('#id').val();
+var pw = $('#pw').val();
+
+    //이메일 공백 확인
+    if(id == ""){
+        alert("이메일을 입력해 주세요");
+        $('#id').focus();
+        return false;
+      }
+           
+    //이메일 유효성 검사
+    if(!Mail.test(id)){
+        alert("이메일 형식에 맞게 입력해 주세요")
+        $('#id').focus();
+        return false;
+      }
+  
+    //비밀번호 공백 확인
+    if(pw == ""){
+        alert("비밀번호를 입력해 주세요");
+        $('#pw').focus();
+        return false;
+      }
+           
+    //비밀번호 유효성 검사
+    if(!pw1.test(pw)){
+        alert("4 자 이상, 12 자 미만으로 입력해 주세요")
+        $('#pw').focus();
+        return false;
+      }
+    }
+    </script>
+</head>     
 <body>   
         <form action="/" method="post">
-        <div class="login_box">
-                <p id="main-title">LOGIN</p>
-                <div class="input_login">
-                    <input type="text" name="id" id="id" placeholder="이메일을 입력하세요">
-                </div>
-                <div class="input_login">
-                    <input type="password" name="pw" id="pw" placeholder="비밀번호를 입력하세요">
-                </div>
-                    <button class="bt-login">로그인</button>
-        </div>
+     <div class="login_box">
+          <p id="main-title">LOGIN</p>
+          <div class="input_login">
+          <input type="text" name="id" id="id" placeholder="이메일을 입력하세요">
+          </div>
+          <div class="input_login">
+          <input type="password" name="pw" id="pw" placeholder="비밀번호를 입력하세요">
+          </div>
+          <button class="bt-login" onclick="click_check();">로그인</button>
+     <table align="center" height="50">
+          <tr>
+               <td><a style="text-decoration:none;" href="sigu">회원가입 | </a></td>
+               <td><a style="text-decoration:none;" href="#">아이디 찾기 | </a></td>
+               <td><a style="text-decoration:none;" href="#">비밀번호 찾기</a></td>
+          </tr>
+     </table>
+     </div>
         </form>
 </body>
 </html>
