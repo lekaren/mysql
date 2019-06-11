@@ -11,9 +11,16 @@ const pool = mysql.createPool({
 
 // 로그인 페이지
 router.get('/', function(req, res, next) {
-  const id = req.body.id;
-  const pw = req.body.pw;
-  res.render('lgg');
+    pool.getConnection(function(err, conn){
+      conn.query('SELECT * FROM user;', function(err, results){
+        if (req.session.ID && req.session.PW ) {
+          res.render('index', { results : results });
+        } else {
+          res.render('lgg', {  });
+        }
+        conn.release();
+      });
+    });
 });
 
 // 로그인 처리
@@ -22,26 +29,35 @@ router.post('/', function(req, res, next) {
   const id = req.body.id;
   const pw = req.body.pw;
 
-  req.session.ID = req.body.id;
-  req.session.PW = req.body.pw;
-
   pool.getConnection(function(err, conn){
-    conn.query(`SELECT * FROM user WHERE email = '${id}' AND pw = PASSWORD('${pw}');`, function(err, results){
+    conn.query(`SELECT * FROM user WHERE email = '${id}' AND pw = PASSWORD('${pw}');`, function(err, result){
+      if(result.length > 0){
 
-      if(req.session.ID && req.session.PW){
-        conn.query('SELECT * FROM user;', function(err, results){
-        res.render('lgi', {results : results});
+        req.session.ID = req.body.id;
+        req.session.PW = req.body.pw;
+        
+        conn.query('SELECT * FROM user;', function(err, result){
+        res.render('lgi',  {ID: id, PW: pw});
         });
       }else{
-        res.render('index', { });
+        res.render('lgf');
       }
+      conn.release();
+    });
+  });
+});
 
-      // if(result.length > 0){
-      //   res.render('lgi', {id: id, pw: pw});
-      // }
-      // pool.getConnection(function(err, conn){
-      //   conn.query(`SELECT * FROM user;`, function(err, results){
-          
+// 로그아웃
+router.get('/lgo', function(req, res, next) {
+  pool.getConnection(function(err, conn){
+    conn.query('SELECT * FROM user;', function(err, results){
+       if (req.session.ID && req.session.PW ) {
+        res.render('lgo', { results : results });
+        req.session.destroy();
+      } else {
+        res.send('로그아웃 할 정보가 없습니다.');
+      }
+      res.render('index' ,{results : results});
       conn.release();
     });
   });
@@ -51,8 +67,7 @@ router.post('/', function(req, res, next) {
 router.get('/user', function(req, res, next) {
   pool.getConnection(function(err, conn){
     conn.query('SELECT * FROM user;', function(err, results){
-      res.render('index' ,{results : results});
-
+      res.render('index', {results : results});
       conn.release();
     });
   });
@@ -63,7 +78,7 @@ router.get('/delete', function(req, res, next) {
   pool.getConnection(function(err, conn){
     if(err) {throw err;
     }
-    conn.query(`DELETE FROM user WHERE num = '${req.query.num}'`, function(err, results){
+    conn.query(`DELETE FROM user WHERE num = '${req.query.num}'`, function(err, result){
       conn.release();
       req.session.destroy();
       res.redirect('/user');
@@ -76,7 +91,6 @@ router.get('/sigu', function(req, res, next) {
   pool.getConnection(function(err, conn){
     conn.query('SELECT * FROM user;', function(err, results){
       res.render('sigu' ,{results : results});
-
       conn.release();
     });
   });
