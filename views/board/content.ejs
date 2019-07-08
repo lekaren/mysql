@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>content</title>
+</head>
+<body>
+   <center>
+    <form action="/board/content" method="POST">
+    <table border=1; style="font-size: 18px; border-collapse: collapse">
+        <% for (const result of results) { %>
+         <tr>
+            <th>
+                제목
+            </th>
+            <td>
+                <%= result.title %>
+            </td>
+         </tr>
+         <tr>
+            <th>
+                내용
+            </th>
+            <td>
+                <%= result.content %>
+            </td>
+        <% } %>
+         </tr>
+    </form>
+         <tr>
+            <th>
+                댓글
+            </th>
+         </tr>
+    <form action="/board/comment" method="post">
+         <tr>
+            <th>
+                댓글 달기
+            </th>
+            <td>
+        <input type="hidden" name="board_id" value="<%= board_id %>">
+        <input type = "text" name="comment" placeholder="내용을 입력해 주세요" style="border:none;">
+        <input type="submit">
+            </td>
+         </tr>
+    </form>
+        <% for (const coms of com) {%>
+         <tr>
+            <td>
+                <%= coms.email %> :
+           </td>
+            <td>
+                <%= coms.content %>
+           </td>
+         </tr>
+        <% } %>
+         </tr>
+    </table>
+           
+       <a href="/board/ud?number=<%= results[0].number %>"><input type="submit" value = "수정하기"></a>
+   </center>
+</body>
+</html>
