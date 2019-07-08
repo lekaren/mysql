@@ -1,13 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  connectionLimit : 10,
-  host            : 'localhost',
-  user            : 'root',
-  password        : '1234',
-  database        : 'karen'
-});
+const pool = require('../config/dbconfig');
 
 // 로그인 페이지
 router.get('/', function(req, res, next) {
